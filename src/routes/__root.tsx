@@ -113,13 +113,38 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
+import { Toaster } from "@/components/ui/sonner";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouter().state.location.pathname;
+  const isApi = pathname.startsWith("/api");
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      {isApi ? (
+        <Outlet />
+      ) : (
+        <SidebarProvider>
+          <div className="flex min-h-screen w-full bg-gradient-subtle">
+            <AppSidebar />
+            <SidebarInset className="flex flex-1 flex-col">
+              <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b border-border/60 bg-background/80 px-4 backdrop-blur">
+                <SidebarTrigger />
+                <span className="font-display text-sm font-medium text-muted-foreground">
+                  AI Workplace Productivity Assistant
+                </span>
+              </header>
+              <main className="flex-1 p-6 md:p-10">
+                <Outlet />
+              </main>
+            </SidebarInset>
+          </div>
+          <Toaster />
+        </SidebarProvider>
+      )}
     </QueryClientProvider>
   );
 }
