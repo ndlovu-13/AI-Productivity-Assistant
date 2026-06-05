@@ -91,10 +91,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6d00814a-23c3-4ada-8745-6e853382a354/id-preview-5952cc5b--459db203-2052-4237-81f9-0fef72bcc2db.lovable.app-1780575267289.png" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" },
+      { rel: "stylesheet", href: appCss },
     ],
   }),
   shellComponent: RootShell,
@@ -105,11 +105,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="dark">
         {children}
         <Scripts />
       </body>
@@ -132,14 +132,19 @@ function RootComponent() {
         <Outlet />
       ) : (
         <SidebarProvider>
-          <div className="flex min-h-screen w-full bg-gradient-subtle">
+          <div className="flex min-h-screen w-full bg-background">
             <AppSidebar />
-            <SidebarInset className="flex flex-1 flex-col">
-              <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b border-border/60 bg-background/80 px-4 backdrop-blur">
+            <SidebarInset className="flex flex-1 flex-col bg-transparent">
+              <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b border-border/60 bg-background/60 px-4 backdrop-blur-xl">
                 <SidebarTrigger />
-                <span className="font-display text-sm font-medium text-muted-foreground">
-                  AI Workplace Productivity Assistant
+                <div className="h-4 w-px bg-border" />
+                <span className="font-display text-sm font-medium tracking-tight text-foreground/80">
+                  AI Workplace <span className="text-muted-foreground">/ Productivity</span>
                 </span>
+                <div className="ml-auto flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                  AI online
+                </div>
               </header>
               <main className="flex-1 p-6 md:p-10">
                 <Outlet />
